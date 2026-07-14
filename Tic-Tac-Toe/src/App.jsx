@@ -1,72 +1,64 @@
 import { useState } from 'react'
 import './App.css'
-import MessageList from './components/MessageList'
-import OpenAI from 'openai'
-
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
-})
+// зделать линию при выигрише X или O
+// зделать кнопку Reset что бы заново начать
+//
+//
 function App() {
-  const [inputText, setInputText] = useState("");
-  const [messages, setMessages] = useState([])
-  const [isLoading, setIsLoading] = useState(false);
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-if (inputText.trim() === "" || isLoading) return;
-const newmessage = {
-  id: Date.now(),
-  text: inputText,
-  sender: "user"
-}
-setMessages(prev => [...prev, newmessage])
-setInputText("")
-setIsLoading(true)
-const botMessageId = Date.now() + 1;
+  const [board, setBoard] = useState(Array(9).fill(null))
+  const [isX, setIsX] = useState(true)
 
-setMessages(prev => [...prev, { id: botMessageId, text: "Thinking...", sender: "bot" }]);
-try {
-const completion = await openai.chat.completions.create({
-  model: "gpt-4o-mini",
-  messages: [{role: "user", content: inputText}],
-})
+  const winInfo = calculateWinner(board);
+ const winner = winInfo ? winInfo.winner : null;
+ const lineIndex = winInfo ? winInfo.lineIndex : null;
 
-const fullmessage = completion.choices[0].message.content;
-setMessages(prev => prev.map(msg =>
-  msg.id === botMessageId ? {...msg, text: "" } : msg
-))
-const interval = setInterval(() => {
-    setMessages(prev => prev.map(msg => {
-     if (msg.id === botMessageId) {
-      const nextIndex = msg.text.length;
-      if (nextIndex >= fullmessage.length) {
-        clearInterval(interval);
-         setIsLoading(false)
-        return msg;
-      }
-      return { ...msg, text: msg.text + fullmessage[nextIndex] };
-     }
-     return msg;
-}));
-}, 40) } catch (err) {
-  console.log("mistake :/", err)
-  setMessages(prev => prev.map(msg => 
-    msg.id === botMessageId ? {...msg, text: "Error try again!" } : msg
-  ))
-  setIsLoading(false)
-}
+  function handleClick(index) {
+   const copy = [...board];
+   if (copy[index] || winner) return;
+    copy[index] = isX ? 'X' : 'O';
+    setBoard(copy)
+    setIsX(!isX)
+  }
+  function ResetGame() {
+  setBoard(Array(9).fill(null))
+  setIsX(true)
   }
   return (
-    <div className='chat'>
-      <MessageList messages={messages} />
-      <form onSubmit={handleSendMessage}>
-        <input type="text" value={inputText} disabled={isLoading} placeholder={isLoading ? "AI is typing..." : "Type your message..."} onChange={(e) => setInputText(e.target.value)} />
-        <button type='submit' disabled={isLoading}>
-          {isLoading ? "..." : "Search"}
-        </button>
-      </form>
+    <div className='game'>
+      <h1>Tic-Tac-Toe game</h1>
+      {winner ? <h2>Winner: {winner}</h2> : <h2>Next Player: {isX ? 'X' : '0'}</h2>}
+    <div className='game-container'>
+    <div className='board'>
+   {board.map((value, index) => (
+    <button onClick={() => handleClick(index)} key={index} className='button1'>{value}</button>
+   ))}
+   {lineIndex !== null && <div className={`winning-line line-${lineIndex}`}></div>}
+    </div>
+    <button onClick={ResetGame} className='button2'>Start again</button>
+    </div>
     </div>
   )
 }
-export default App;
+  function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2], // index 0 (горизонтальная 1)
+    [3, 4, 5], // index 1 (горизонтальная 2)
+    [6, 7, 8], // index 2 (горизонтальная 3)
+    [0, 3, 6], // index 3 (вертикальная 1)
+    [1, 4, 7], // index 4 (вертикальная 2)
+    [2, 5, 8], // index 5 (вертикальная 3)
+    [0, 4, 8], // index 6 (диагональ слева направо)
+    [2, 4, 6] // index 7 (диагональ справа налево)
+  ];
 
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return { winner: squares[a], lineIndex: i};
+    }
+  }
+  return null;
+}
+
+export default App;
