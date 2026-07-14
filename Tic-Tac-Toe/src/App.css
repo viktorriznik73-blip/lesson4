@@ -60,13 +60,11 @@ h2 {
     color: black;
     font-family: "Lato", sans-serif;
     font-size: 15px;
-    text-shadow: 0 10px 20px black;
 }
 h1 {
     color: black;
     font-family: "Lato", sans-serif;
     font-size: 30px;
-    text-shadow: 0 10px 20px black;
 }
 .game-container {
     gap: 10px;
