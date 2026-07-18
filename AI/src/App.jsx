@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import MessageList from './components/MessageList'
 import OpenAI from 'openai'
 import { isValidElement } from 'react'

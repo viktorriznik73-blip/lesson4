@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 // зделать линию при выигрише X или O
 // зделать кнопку Reset что бы заново начать
 //

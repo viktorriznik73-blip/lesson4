@@ -1,5 +1,5 @@
 document.querySelector('form').addEventListener('submit', function (event) {
-    alert('hello, ' + document.querySelector('#name').value);
+    alert(document.querySelector('#name').value);
     event.preventDefault();
 })
 document.addEventListener('DOMContentLoaded', function() {
@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     input.addEventListener('keyup', function(event) {
         let name = document.querySelector('p');
         if (input.value) {
-            name.innerHTML = `hello ${input.value}`;
+            name.innerHTML = input.value;
         } else {
-            name.innerHTML = `hello what ever you are!`
+            name.innerHTML = `Type your name`
         }
     })
 })
@@ -34,6 +34,3 @@ function blink() {
         body.style.visibility === 'hidden';
     }
 }
-navigator.geolocation.getCurrentPosition(function(position) {
-    document.write(position.coords.accuracy.latitude + " , " + position.coords.longitude)
-})
