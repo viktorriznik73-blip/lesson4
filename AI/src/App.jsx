@@ -75,6 +75,8 @@ function App() {
   }
 
   return (
+    <div>
+      <h1>My Personal AI</h1>
     <div className='chat'>
       <MessageList messages={messages} />
       <form onSubmit={handleSendMessage}>
@@ -90,6 +92,7 @@ function App() {
         </button>
       </form>
       <div ref={messageEndRef} />
+    </div>
     </div>
   )
 }
