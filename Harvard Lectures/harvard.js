@@ -2,17 +2,6 @@ document.querySelector('form').addEventListener('submit', function (event) {
     alert(document.querySelector('#name').value);
     event.preventDefault();
 })
-document.addEventListener('DOMContentLoaded', function() {
-    let input = document.querySelector('input');
-    input.addEventListener('keyup', function(event) {
-        let name = document.querySelector('p');
-        if (input.value) {
-            name.innerHTML = input.value;
-        } else {
-            name.innerHTML = `Type your name`
-        }
-    })
-})
 let body = document.querySelector('body');
 document.querySelector('#red').addEventListener('click', function() {
     body.style.backgroundColor = 'red';
@@ -26,11 +15,6 @@ document.querySelector('#blue').addEventListener('click', function() {
 document.querySelector('#white').addEventListener('click', function() {
     body.style.backgroundColor = 'white';
 })
-function blink() {
-    let body = document.querySelector('body');
-    if (body.style.visibility == 'visible') {
-        body.style.visibility === 'visible';
-    } else {
-        body.style.visibility === 'hidden';
-    }
-}
+navigator.geolocation.getCurrentPosition(function(position) {
+    document.write(position.coords.latitude + ", " + position.coords.longitude);
+})
