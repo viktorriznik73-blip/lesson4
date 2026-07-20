@@ -4,7 +4,7 @@ import './App.css'
 // константа с API_KEY .env
 // написать fetch погоды
 
-const API_KEY = import.meta.env.VITEWEATHERAPIKEY
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY
 
 function App() {
   const [weather, setWeather] = useState(null);
